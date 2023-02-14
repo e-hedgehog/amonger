@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/playersListFragment">
+
+    <fragment
+        android:id="@+id/playersListFragment"
+        android:name="com.ehedgehog.android.amonger.screen.playersList.PlayersListFragment"
+        android:label="@string/app_name" >
+        <action
+            android:id="@+id/action_playersList_to_playerDetails"
+            app:destination="@id/playerDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/playerDetailsFragment"
+        android:name="com.ehedgehog.android.amonger.screen.playerDetails.PlayerDetailsFragment"
+        android:label="Player Details" >
+        <argument
+            android:name="player"
+            app:argType="com.ehedgehog.android.amonger.screen.PlayerItem" />
+    </fragment>
+
+</navigation>

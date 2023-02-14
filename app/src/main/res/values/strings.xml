@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Amonger</string>
+    <string name="search_label">Search</string>
+    <string name="name_label">Nickname</string>
+    <string name="friend_code_label">Friend code</string>
+    <string name="player_aka_hint">Enter other known nicknames of this player</string>
+    <string name="player_host_label">Is host:</string>
+    <string name="player_notes_hint">Notes about player</string>
+    <string name="save_label">Save</string>
+</resources>

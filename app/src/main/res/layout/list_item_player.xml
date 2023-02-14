@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="player"
+            type="com.ehedgehog.android.amonger.screen.PlayerItem" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/player_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        app:cardElevation="4dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp">
+
+            <ImageView
+                android:id="@+id/player_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="8dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder"
+                app:imageUrl="@{player.imageUrl}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:src="@drawable/placeholder"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/player_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="@{player.name}"
+                app:layout_constraintStart_toEndOf="@id/player_image"
+                app:layout_constraintTop_toTopOf="@id/player_image"
+                tools:text="zer0iq"/>
+
+            <TextView
+                android:id="@+id/player_aka"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@{`AKA ` + player.aka}"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/player_name"
+                app:layout_constraintStart_toEndOf="@id/player_name"
+                app:layout_constraintTop_toTopOf="@id/player_name"
+                app:layout_constraintVertical_bias="0.75"
+                tools:text="AKA 0айкью" />
+
+            <TextView
+                android:id="@+id/player_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textSize="18sp"
+                android:text="@{player.code}"
+                app:layout_constraintStart_toStartOf="@id/player_name"
+                app:layout_constraintTop_toBottomOf="@id/player_name"
+                tools:text="ponypublic#9178"/>
+
+            <TextView
+                android:id="@+id/player_notes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textSize="16sp"
+                android:text="@{player.notes}"
+                app:layout_constraintStart_toStartOf="@id/player_name"
+                app:layout_constraintTop_toBottomOf="@id/player_code"
+                tools:text="ваш хост"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

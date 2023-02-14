@@ -1,0 +1,35 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext {
+        version_android = "7.1.2"
+        version_kotlin = "1.8.0"
+        version_safeargs = "2.5.3"
+        version_google_services = "4.3.15"
+        version_crashlytics = "2.9.2"
+        version_corektx = "1.9.0"
+        version_appcompat = "1.6.0"
+        version_activityktx = "1.7.0-alpha04"
+        version_material = "1.8.0"
+        version_constraintlayout = "2.1.4"
+        version_legacy = "1.0.0"
+        version_lifecycle = "2.5.1"
+        version_navigation = "2.5.3"
+        version_firebase = "31.2.0"
+        version_dagger = "2.44.2"
+        version_image_cropper = "4.5.0"
+        version_glide = "4.14.2"
+    }
+}
+
+plugins {
+    id 'com.android.application' version "$version_android" apply false
+    id 'com.android.library' version "$version_android" apply false
+    id 'org.jetbrains.kotlin.android' version "$version_kotlin" apply false
+    id 'androidx.navigation.safeargs.kotlin' version "$version_safeargs" apply false
+    id 'com.google.gms.google-services' version "$version_google_services" apply false
+    id 'com.google.firebase.crashlytics' version "$version_crashlytics" apply false
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
