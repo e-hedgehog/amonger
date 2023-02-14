@@ -23,6 +23,7 @@ class PlayersListViewModel : ViewModel() {
     private val _searchMode = MutableLiveData<SearchMode>().apply { value = SearchMode.CODE }
     val searchMode: LiveData<SearchMode> get() = _searchMode
 
+    private var fullPlayersList: List<PlayerItem>? = emptyList()
     private val _playersList = MutableLiveData<List<PlayerItem>>()
     val playersList: LiveData<List<PlayerItem>> get() = _playersList
 
@@ -57,11 +58,29 @@ class PlayersListViewModel : ViewModel() {
         }
     }
 
+    fun searchPlayers(query: String) {
+        val resultList: ArrayList<PlayerItem> = arrayListOf()
+        if (query.isEmpty()) {
+            fullPlayersList?.let { resultList.addAll(it) }
+        } else {
+            val queryString = query.lowercase().trim()
+            fullPlayersList?.forEach {
+                if (it.code?.lowercase()?.trim()?.contains(queryString) == true) {
+                    resultList.add(it)
+                }
+            }
+        }
+        _playersList.value = resultList
+    }
+
     fun loadStoredPlayers() {
         coroutineScope.launch {
             playersManager.fetchStoredPlayers().collect {
                 when {
-                    it.isSuccess -> _playersList.value = it.getOrNull()
+                    it.isSuccess -> {
+                        _playersList.value = it.getOrNull()
+                        fullPlayersList = it.getOrNull()
+                    }
                     it.isFailure -> it.exceptionOrNull()?.printStackTrace()
                 }
             }

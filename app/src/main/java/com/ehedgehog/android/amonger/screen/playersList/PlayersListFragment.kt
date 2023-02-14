@@ -1,13 +1,13 @@
 package com.ehedgehog.android.amonger.screen.playersList
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.ehedgehog.android.amonger.R
 import com.ehedgehog.android.amonger.databinding.FragmentPlayersListBinding
@@ -28,12 +28,31 @@ class PlayersListFragment : Fragment() {
         binding.playersRecyclerView.adapter = PlayersListAdapter(viewModel::displayPlayerDetails)
         binding.playersRecyclerView.itemAnimator = null
 
-        viewModel.navigateToSelectedPlayer.observe(viewLifecycleOwner, Observer { player ->
+        binding.playersSearch.setOnQueryTextListener(object: OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    viewModel.searchPlayers(newText)
+                    return true
+                }
+                return false
+            }
+
+        })
+
+        viewModel.navigateToSelectedPlayer.observe(viewLifecycleOwner) { player ->
             if (player != null) {
-                findNavController().navigate(PlayersListFragmentDirections.actionPlayersListToPlayerDetails(player))
+                findNavController().navigate(
+                    PlayersListFragmentDirections.actionPlayersListToPlayerDetails(
+                        player
+                    )
+                )
                 viewModel.displayPlayerDetailsComplete()
             }
-        })
+        }
 
         viewModel.loadStoredPlayers()
 
