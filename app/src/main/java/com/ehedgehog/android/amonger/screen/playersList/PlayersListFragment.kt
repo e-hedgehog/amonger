@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.ehedgehog.android.amonger.R
 import com.ehedgehog.android.amonger.databinding.FragmentPlayersListBinding
 
-class PlayersListFragment : Fragment() {
+class PlayersListFragment : Fragment(), OnQueryTextListener {
 
     private val viewModel: PlayersListViewModel by viewModels()
     private lateinit var binding: FragmentPlayersListBinding
@@ -28,20 +28,11 @@ class PlayersListFragment : Fragment() {
         binding.playersRecyclerView.adapter = PlayersListAdapter(viewModel::displayPlayerDetails)
         binding.playersRecyclerView.itemAnimator = null
 
-        binding.playersSearch.setOnQueryTextListener(object: OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
+        binding.playersSearch.setOnQueryTextListener(this)
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null) {
-                    viewModel.searchPlayers(newText)
-                    return true
-                }
-                return false
-            }
-
-        })
+        viewModel.searchMode.observe(viewLifecycleOwner) {
+            onQueryTextChange(binding.playersSearch.query.toString())
+        }
 
         viewModel.navigateToSelectedPlayer.observe(viewLifecycleOwner) { player ->
             if (player != null) {
@@ -57,6 +48,18 @@ class PlayersListFragment : Fragment() {
         viewModel.loadStoredPlayers()
 
         return binding.root
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        if (newText != null) {
+            viewModel.searchPlayers(newText)
+            return true
+        }
+        return false
     }
 
 }
