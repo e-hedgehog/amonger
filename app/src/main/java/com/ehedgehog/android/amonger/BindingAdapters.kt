@@ -26,8 +26,7 @@ fun bindImageView(imageView: ImageView, url: String?, cacheOnlyWeb: Boolean?) {
             builder = builder.skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
 
-        builder.placeholder(R.drawable.placeholder)
-            .centerCrop()
+        builder.centerCrop()
             .fitCenter()
             .into(imageView)
     }

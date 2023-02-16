@@ -45,6 +45,7 @@ class PlayersListAdapter(
     class PlayerItemViewHolder(private val binding: ListItemPlayerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(player: PlayerItem) {
+            binding.playerImage.clipToOutline = true
             binding.player = player
             binding.executePendingBindings()
         }
