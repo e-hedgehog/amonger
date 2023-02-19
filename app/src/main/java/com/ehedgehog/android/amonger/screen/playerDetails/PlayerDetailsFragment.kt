@@ -1,10 +1,12 @@
 package com.ehedgehog.android.amonger.screen.playerDetails
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
@@ -19,6 +21,7 @@ import com.canhub.cropper.CropImageView
 import com.ehedgehog.android.amonger.R
 import com.ehedgehog.android.amonger.databinding.FragmentPlayerDetailsBinding
 import com.ehedgehog.android.amonger.screen.playerDetails.PlayerDetailsViewModel.PlayerDetailsViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 
 class PlayerDetailsFragment: Fragment(), MenuProvider {
@@ -48,6 +51,8 @@ class PlayerDetailsFragment: Fragment(), MenuProvider {
         binding.viewModel = viewModel
         binding.playerImage.clipToOutline = true
 
+        viewModel.monitorConnectionState()
+
         viewModel.navigateToImageCropper.observe(viewLifecycleOwner) {
             it?.let {
                 cropImage.launch(
@@ -72,6 +77,18 @@ class PlayerDetailsFragment: Fragment(), MenuProvider {
             if (it == false) findNavController().navigateUp()
         }
 
+        viewModel.showNoConnectionSnackbar.observe(viewLifecycleOwner) {
+            it?.let {
+                hideSoftKeyboard()
+                Snackbar.make(
+                    binding.playerDetailsContainer,
+                    "No internet connection.",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                viewModel.displayNoConnectionSnackbarComplete()
+            }
+        }
+
         return binding.root
     }
 
@@ -91,6 +108,13 @@ class PlayerDetailsFragment: Fragment(), MenuProvider {
                 true
             }
             else -> false
+        }
+    }
+
+    private fun hideSoftKeyboard() {
+        requireActivity().currentFocus?.let { view ->
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 

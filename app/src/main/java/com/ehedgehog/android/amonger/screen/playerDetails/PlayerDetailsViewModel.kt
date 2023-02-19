@@ -2,7 +2,6 @@ package com.ehedgehog.android.amonger.screen.playerDetails
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,6 +31,12 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : ViewModel(
     private val _navigateToImageCropper = MutableLiveData<Boolean>()
     val navigateToImageCropper: LiveData<Boolean> get() = _navigateToImageCropper
 
+    private val _showNoConnectionSnackbar = MutableLiveData<Boolean>()
+    val showNoConnectionSnackbar: LiveData<Boolean> get() = _showNoConnectionSnackbar
+
+    private val _isOnline = MutableLiveData<Boolean>()
+    val isOnline: LiveData<Boolean> get() = _isOnline
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
@@ -48,6 +53,17 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : ViewModel(
         currentPlayer.imageUrl?.let { playerImageUrl.value = it }
     }
 
+    fun monitorConnectionState() {
+        coroutineScope.launch {
+            playersManager.monitorConnectionState().collect {
+                when {
+                    it.isSuccess -> _isOnline.value = it.getOrNull()
+                    it.isFailure -> it.exceptionOrNull()?.printStackTrace()
+                }
+            }
+        }
+    }
+
     fun displayImageCropper() {
         _navigateToImageCropper.value = true
     }
@@ -57,8 +73,22 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : ViewModel(
         _navigateToImageCropper.value = null
     }
 
+    fun displayNoConnectionSnackbar() {
+        _showNoConnectionSnackbar.value = true
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun displayNoConnectionSnackbarComplete() {
+        _showNoConnectionSnackbar.value = null
+    }
+
     fun savePlayer() {
-        if (currentPlayer.id != null) updatePlayerWithImage() else addPlayerWithImage()
+        isOnline.value?.let { online ->
+            if (online)
+                if (currentPlayer.id != null) updatePlayerWithImage() else addPlayerWithImage()
+            else
+                displayNoConnectionSnackbar()
+        }
     }
 
     private fun addPlayerWithImage() {
@@ -67,13 +97,7 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : ViewModel(
             if (playerImageUrl.value != null) {
                 try {
                     val url = playersManager.uploadPlayerImage(Uri.parse(playerImageUrl.value))
-                    Log.i("ImageTest", "add player received url: $url")
                     addPlayer(url)
-//                    .collect {
-//                    when {
-//                        it.isSuccess -> addPlayer(it.getOrNull())
-//                        it.isFailure -> it.exceptionOrNull()?.printStackTrace()
-//                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -95,19 +119,10 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : ViewModel(
                 currentPlayer.id?.let { id ->
                     try {
                         val url = playersManager.uploadPlayerImage(Uri.parse(playerImageUrl.value), id)
-                        Log.i("ImageTest", "update player received url: $url")
                         updatePlayer(url)
                     } catch (e: Exception) {
-                        Log.i("ImageTest", "received error", e)
                         e.printStackTrace()
                     }
-
-//                        .collect {
-//                        when {
-//                            it.isSuccess -> updatePlayer(it.getOrNull())
-//                            it.isFailure -> it.exceptionOrNull()?.printStackTrace()
-//                        }
-//                    }
                 }
             } else {
                 updatePlayer()

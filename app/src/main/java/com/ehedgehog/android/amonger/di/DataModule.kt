@@ -18,6 +18,7 @@ class DataModule {
     @Provides
     @Singleton
     fun provideFirebase(): FirebaseDatabase {
+        Firebase.database.setPersistenceEnabled(true)
         return Firebase.database
     }
 
