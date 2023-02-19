@@ -17,8 +17,8 @@ import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.ehedgehog.android.amonger.R
-import com.ehedgehog.android.amonger.screen.playerDetails.PlayerDetailsViewModel.PlayerDetailsViewModelFactory
 import com.ehedgehog.android.amonger.databinding.FragmentPlayerDetailsBinding
+import com.ehedgehog.android.amonger.screen.playerDetails.PlayerDetailsViewModel.PlayerDetailsViewModelFactory
 import java.io.File
 
 class PlayerDetailsFragment: Fragment(), MenuProvider {
@@ -46,6 +46,7 @@ class PlayerDetailsFragment: Fragment(), MenuProvider {
             R.layout.fragment_player_details, container, false)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        binding.playerImage.clipToOutline = true
 
         viewModel.navigateToImageCropper.observe(viewLifecycleOwner) {
             it?.let {

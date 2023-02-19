@@ -14,16 +14,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/player_details_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <ImageView
             android:id="@+id/player_image"
             android:layout_width="128dp"
             android:layout_height="128dp"
-            android:layout_margin="8dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/placeholder"
+            android:background="@drawable/image_shape"
             android:onClick="@{() -> viewModel.displayImageCropper()}"
             app:imageUrl="@{viewModel.playerImageUrl}"
             app:cacheOnlyWeb="@{true}"
@@ -32,23 +33,55 @@
             tools:src="@tools:sample/avatars"
             tools:ignore="ContentDescription" />
 
+        <TextView
+            android:id="@+id/player_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:translationZ="0.01dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:background="@color/white"
+            android:visibility="@{(viewModel.playerName == null || viewModel.playerName.empty) ? View.GONE : View.VISIBLE }"
+            android:text="@string/name_label"
+            android:textSize="12sp"
+            app:layout_constraintTop_toTopOf="@id/player_name_field"
+            app:layout_constraintStart_toStartOf="@id/player_name_field"
+            app:layout_constraintBottom_toTopOf="@id/player_name_field"/>
+
         <EditText
             android:id="@+id/player_name_field"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="16dp"
             android:hint="@string/name_label"
             android:text="@={viewModel.playerName}"
             android:inputType="text"
             android:maxLength="10"
+            android:maxLines="1"
             android:minHeight="48dp"
-            android:textColorHint="#757575"
+            android:textColorHint="@color/hint_color"
             app:layout_constraintBottom_toTopOf="@id/player_code_field"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/player_image"
             app:layout_constraintTop_toTopOf="@id/player_image"
             tools:ignore="Autofill" />
+
+        <TextView
+            android:id="@+id/player_code_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:translationZ="0.01dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:background="@color/white"
+            android:visibility="@{(viewModel.playerCode == null || viewModel.playerCode.empty) ? View.GONE : View.VISIBLE }"
+            android:text="@string/friend_code_label"
+            android:textSize="12sp"
+            app:layout_constraintTop_toTopOf="@id/player_code_field"
+            app:layout_constraintStart_toStartOf="@id/player_code_field"
+            app:layout_constraintBottom_toTopOf="@id/player_code_field"/>
 
         <EditText
             android:id="@+id/player_code_field"
@@ -58,7 +91,9 @@
             android:text="@={viewModel.playerCode}"
             android:inputType="text"
             android:minHeight="48dp"
-            android:textColorHint="#757575"
+            android:maxLength="15"
+            android:maxLines="1"
+            android:textColorHint="@color/hint_color"
             app:layout_constraintBottom_toBottomOf="@id/player_image"
             app:layout_constraintEnd_toEndOf="@id/player_name_field"
             app:layout_constraintStart_toStartOf="@id/player_name_field"
@@ -66,17 +101,34 @@
             tools:ignore="Autofill"
             tools:text="wwwwwwwwww#3333"/>
 
+        <TextView
+            android:id="@+id/player_aka_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:translationZ="0.01dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:background="@color/white"
+            android:visibility="@{(viewModel.playerAka == null || viewModel.playerAka.empty) ? View.GONE : View.VISIBLE }"
+            android:text="@string/aka_label"
+            android:textSize="12sp"
+            app:layout_constraintTop_toTopOf="@id/player_aka_field"
+            app:layout_constraintStart_toStartOf="@id/player_aka_field"
+            app:layout_constraintBottom_toTopOf="@id/player_aka_field"/>
+
         <EditText
             android:id="@+id/player_aka_field"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:gravity="top"
             android:hint="@string/player_aka_hint"
             android:text="@={viewModel.playerAka}"
             android:inputType="textMultiLine"
             android:lines="3"
-            android:textColorHint="#757575"
+            android:maxLines="3"
+            android:textColorHint="@color/hint_color"
             app:layout_constraintEnd_toEndOf="@id/player_code_field"
             app:layout_constraintStart_toStartOf="@id/player_image"
             app:layout_constraintTop_toBottomOf="@id/player_image"
@@ -105,6 +157,22 @@
             app:layout_constraintTop_toBottomOf="@id/player_aka_field"
             app:layout_constraintEnd_toEndOf="@id/player_aka_field"/>
 
+        <TextView
+            android:id="@+id/player_notes_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:translationZ="0.01dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:background="@color/white"
+            android:visibility="@{(viewModel.playerNotes == null || viewModel.playerNotes.empty) ? View.GONE : View.VISIBLE }"
+            android:text="@string/notes_label"
+            android:textSize="12sp"
+            app:layout_constraintTop_toTopOf="@id/player_notes_field"
+            app:layout_constraintStart_toStartOf="@id/player_notes_field"
+            app:layout_constraintBottom_toTopOf="@id/player_notes_field"/>
+
         <EditText
             android:id="@+id/player_notes_field"
             android:layout_width="0dp"
@@ -115,7 +183,8 @@
             android:text="@={viewModel.playerNotes}"
             android:inputType="textMultiLine"
             android:lines="5"
-            android:textColorHint="#757575"
+            android:maxLines="5"
+            android:textColorHint="@color/hint_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/player_aka_field"
             app:layout_constraintStart_toStartOf="@id/player_aka_field"

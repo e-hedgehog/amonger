@@ -7,4 +7,6 @@
     <string name="player_host_label">Is host:</string>
     <string name="player_notes_hint">Notes about player</string>
     <string name="save_label">Save</string>
+    <string name="notes_label">Notes</string>
+    <string name="aka_label">Also known as</string>
 </resources>
