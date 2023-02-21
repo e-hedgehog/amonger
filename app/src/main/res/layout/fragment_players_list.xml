@@ -80,7 +80,7 @@
             android:onClick="@{() -> viewModel.createNewPlayer()}"
             android:src="@drawable/ic_add"
             app:backgroundTint="@color/red_500"
-            app:tint="@color/white"
+            app:tint="@color/icon_tint"
             tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

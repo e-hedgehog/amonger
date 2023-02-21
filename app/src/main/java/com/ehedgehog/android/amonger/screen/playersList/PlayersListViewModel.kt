@@ -16,12 +16,16 @@ import javax.inject.Inject
 class PlayersListViewModel : ViewModel() {
 
     enum class SearchMode {CODE, NAME}
+    enum class ThemeMode {DAY, NIGHT}
 
     private val viewModelJob = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     private val _searchMode = MutableLiveData<SearchMode>().apply { value = SearchMode.CODE }
     val searchMode: LiveData<SearchMode> get() = _searchMode
+
+    private val _themeMode = MutableLiveData<ThemeMode>().apply { value = ThemeMode.DAY }
+    val themeMode: LiveData<ThemeMode> get() = _themeMode
 
     private var fullPlayersList: List<PlayerItem>? = emptyList()
     private val _playersList = MutableLiveData<List<PlayerItem>>()
@@ -56,6 +60,10 @@ class PlayersListViewModel : ViewModel() {
             SearchMode.NAME -> SearchMode.CODE
             else -> SearchMode.CODE
         }
+    }
+
+    fun setThemeMode(themeMode: ThemeMode) {
+        _themeMode.value = themeMode
     }
 
     fun searchPlayers(query: String) {
