@@ -62,6 +62,11 @@ class PlayersListFragment : Fragment(), OnQueryTextListener, MenuProvider {
         (requireActivity() as MenuHost).addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
+    override fun onStop() {
+        super.onStop()
+        viewModel.clearListeners()
+    }
+
     override fun onQueryTextSubmit(query: String?): Boolean {
         return false
     }

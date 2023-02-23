@@ -77,15 +77,15 @@ class PlayerDetailsFragment: Fragment(), MenuProvider {
             if (it == false) findNavController().navigateUp()
         }
 
-        viewModel.showNoConnectionSnackbar.observe(viewLifecycleOwner) {
-            it?.let {
+        viewModel.showErrorSnackbar.observe(viewLifecycleOwner) { message ->
+            message?.let {
                 hideSoftKeyboard()
                 Snackbar.make(
                     binding.playerDetailsContainer,
-                    "No internet connection.",
+                    it,
                     Snackbar.LENGTH_SHORT
                 ).show()
-                viewModel.displayNoConnectionSnackbarComplete()
+                viewModel.displayErrorSnackbarComplete()
             }
         }
 

@@ -96,6 +96,10 @@ class PlayersListViewModel : ViewModel() {
         }
     }
 
+    fun clearListeners() {
+        playersManager.clearPlayersListener()
+    }
+
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()

@@ -21,6 +21,7 @@ import kotlin.coroutines.resumeWithException
 class PlayersManager(private val playersReference: DatabaseReference, private val imagesReference: StorageReference) {
 
     private var newPlayerRef: DatabaseReference? = null
+    private var playersListener: ValueEventListener? = null
 
     fun monitorConnectionState() = callbackFlow<Result<Boolean>> {
         val connectedRef = Firebase.database.getReference(".info/connected")
@@ -92,7 +93,7 @@ class PlayersManager(private val playersReference: DatabaseReference, private va
     }
 
     fun fetchStoredPlayers() = callbackFlow<Result<List<PlayerItem>>> {
-        val listener = object : ValueEventListener {
+        playersListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val players = snapshot.children.map {
                     it.getValue(PlayerItem::class.java)
@@ -105,10 +106,17 @@ class PlayersManager(private val playersReference: DatabaseReference, private va
             }
         }
 
-        playersReference.addListenerForSingleValueEvent(listener)
+        playersReference.addValueEventListener(playersListener as ValueEventListener)
 
         awaitClose {
-            playersReference.removeEventListener(listener)
+            playersReference.removeEventListener(playersListener as ValueEventListener)
+        }
+    }
+
+    fun clearPlayersListener() {
+        playersListener?.let {
+            playersReference.removeEventListener(it)
+            playersListener = null
         }
     }
 

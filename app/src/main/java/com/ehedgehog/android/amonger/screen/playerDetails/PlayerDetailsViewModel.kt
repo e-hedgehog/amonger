@@ -31,8 +31,8 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : ViewModel(
     private val _navigateToImageCropper = MutableLiveData<Boolean>()
     val navigateToImageCropper: LiveData<Boolean> get() = _navigateToImageCropper
 
-    private val _showNoConnectionSnackbar = MutableLiveData<Boolean>()
-    val showNoConnectionSnackbar: LiveData<Boolean> get() = _showNoConnectionSnackbar
+    private val _showErrorSnackbar = MutableLiveData<String>()
+    val showErrorSnackbar: LiveData<String> get() = _showErrorSnackbar
 
     private val _isOnline = MutableLiveData<Boolean>()
     val isOnline: LiveData<Boolean> get() = _isOnline
@@ -73,21 +73,26 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : ViewModel(
         _navigateToImageCropper.value = null
     }
 
-    fun displayNoConnectionSnackbar() {
-        _showNoConnectionSnackbar.value = true
+    fun displayErrorSnackbar(message: String) {
+        _showErrorSnackbar.value = message
     }
 
     @SuppressLint("NullSafeMutableLiveData")
-    fun displayNoConnectionSnackbarComplete() {
-        _showNoConnectionSnackbar.value = null
+    fun displayErrorSnackbarComplete() {
+        _showErrorSnackbar.value = null
     }
 
     fun savePlayer() {
+        if (playerCode.value.isNullOrEmpty() || playerName.value.isNullOrEmpty()) {
+            displayErrorSnackbar("You haven't filled out all the required fields. \"Nickname\" and \"Friend code\" are mandatory.")
+            return
+        }
+
         isOnline.value?.let { online ->
             if (online)
                 if (currentPlayer.id != null) updatePlayerWithImage() else addPlayerWithImage()
             else
-                displayNoConnectionSnackbar()
+                displayErrorSnackbar("No internet connection.")
         }
     }
 

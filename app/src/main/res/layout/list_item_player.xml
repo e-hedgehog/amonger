@@ -7,6 +7,8 @@
         <variable
             name="player"
             type="com.ehedgehog.android.amonger.screen.PlayerItem" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -55,6 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:visibility="@{player.aka == null || player.aka.empty ? View.GONE : View.VISIBLE}"
                 android:text="@{`AKA ` + player.aka}"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/player_name"
@@ -81,6 +84,7 @@
                 android:layout_marginTop="4dp"
                 android:textSize="16sp"
                 android:text="@{player.notes}"
+                android:visibility="@{player.notes == null || player.notes.empty ? View.GONE : View.VISIBLE}"
                 app:layout_constraintStart_toStartOf="@id/player_name"
                 app:layout_constraintTop_toBottomOf="@id/player_code"
                 tools:text="ваш хост"/>

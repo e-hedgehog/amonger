@@ -2,13 +2,14 @@ package com.ehedgehog.android.amonger.screen.playersList
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.ehedgehog.android.amonger.screen.PlayerItem
 import com.ehedgehog.android.amonger.R
 import com.ehedgehog.android.amonger.databinding.ListItemPlayerBinding
+import com.ehedgehog.android.amonger.screen.PlayerItem
 
 class PlayersListAdapter(
     private val clickListener: (player: PlayerItem) -> Unit
@@ -47,6 +48,8 @@ class PlayersListAdapter(
         fun bind(player: PlayerItem) {
             binding.playerImage.clipToOutline = true
             binding.player = player
+            if (player.imageUrl.isNullOrEmpty())
+                binding.playerImage.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.placeholder))
             binding.executePendingBindings()
         }
     }
