@@ -30,7 +30,10 @@ class PlayersListFragment : Fragment(), OnQueryTextListener, MenuProvider {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        binding.playersRecyclerView.adapter = PlayersListAdapter(viewModel::displayPlayerDetails)
+        binding.playersRecyclerView.adapter = PlayersListAdapter(
+            viewModel::displayPlayerDetails,
+            viewModel::onContextMenuItemClicked
+        )
         binding.playersRecyclerView.itemAnimator = null
 
         binding.playersSearch.setOnQueryTextListener(this)

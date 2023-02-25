@@ -1,10 +1,12 @@
 package com.ehedgehog.android.amonger.screen.playersList
 
 import android.annotation.SuppressLint
+import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ehedgehog.android.amonger.Application
+import com.ehedgehog.android.amonger.R
 import com.ehedgehog.android.amonger.screen.PlayerItem
 import com.ehedgehog.android.amonger.screen.PlayersManager
 import kotlinx.coroutines.CoroutineScope
@@ -93,6 +95,22 @@ class PlayersListViewModel : ViewModel() {
                     it.isFailure -> it.exceptionOrNull()?.printStackTrace()
                 }
             }
+        }
+    }
+
+    fun removeStoredPlayer(player: PlayerItem) {
+        coroutineScope.launch {
+            playersManager.removePlayer(player)
+        }
+    }
+
+    fun onContextMenuItemClicked(menuItem: MenuItem, player: PlayerItem): Boolean {
+        return when (menuItem.itemId) {
+            R.id.context_remove_item -> {
+                removeStoredPlayer(player)
+                true
+            }
+            else -> false
         }
     }
 

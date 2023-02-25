@@ -1,7 +1,10 @@
 package com.ehedgehog.android.amonger.screen.playersList
 
+import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
@@ -12,7 +15,8 @@ import com.ehedgehog.android.amonger.databinding.ListItemPlayerBinding
 import com.ehedgehog.android.amonger.screen.PlayerItem
 
 class PlayersListAdapter(
-    private val clickListener: (player: PlayerItem) -> Unit
+    private val clickListener: (player: PlayerItem) -> Unit,
+    private val contextMenuItemListener: (menuItem: MenuItem, player: PlayerItem) -> Boolean
 ): ListAdapter<PlayerItem, PlayersListAdapter.PlayerItemViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerItemViewHolder {
@@ -29,6 +33,15 @@ class PlayersListAdapter(
     override fun onBindViewHolder(holder: PlayerItemViewHolder, position: Int) {
         val player = getItem(position)
         holder.itemView.setOnClickListener { clickListener(player) }
+
+        val popupMenu = PopupMenu(holder.itemView.context, holder.itemView, Gravity.END)
+        popupMenu.inflate(R.menu.list_item_player_context)
+        popupMenu.setOnMenuItemClickListener { contextMenuItemListener(it, player) }
+        holder.itemView.setOnLongClickListener {
+            popupMenu.show()
+            true
+        }
+
         holder.bind(player)
     }
 

@@ -23,6 +23,7 @@ class PlayersManager(private val playersReference: DatabaseReference, private va
     private var newPlayerRef: DatabaseReference? = null
     private var playersListener: ValueEventListener? = null
 
+    //TODO make result receiving inside manager
     fun monitorConnectionState() = callbackFlow<Result<Boolean>> {
         val connectedRef = Firebase.database.getReference(".info/connected")
         val listener = object : ValueEventListener {
@@ -92,6 +93,10 @@ class PlayersManager(private val playersReference: DatabaseReference, private va
         player.id?.let { playersReference.child(it).setValue(player).await() }
     }
 
+    suspend fun removePlayer(player: PlayerItem) {
+        player.id?.let { playersReference.child(it).removeValue().await() }
+    }
+
     fun fetchStoredPlayers() = callbackFlow<Result<List<PlayerItem>>> {
         playersListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -109,7 +114,8 @@ class PlayersManager(private val playersReference: DatabaseReference, private va
         playersReference.addValueEventListener(playersListener as ValueEventListener)
 
         awaitClose {
-            playersReference.removeEventListener(playersListener as ValueEventListener)
+            if (playersListener != null)
+                playersReference.removeEventListener(playersListener as ValueEventListener)
         }
     }
 
