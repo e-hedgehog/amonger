@@ -9,7 +9,6 @@
     <string name="save_label">Save</string>
     <string name="notes_label">Notes</string>
     <string name="aka_label">Also known as</string>
-    <string name="night_mode_label">Night mode</string>
-    <string name="day_mode_label">Day mode</string>
+    <string name="theme_mode_label">Night mode</string>
     <string name="remove_label">Remove</string>
 </resources>
