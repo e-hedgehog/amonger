@@ -1,7 +1,10 @@
 package com.ehedgehog.android.amonger
 
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
+import androidx.core.view.updateMarginsRelative
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -30,4 +33,11 @@ fun bindImageView(imageView: ImageView, url: String?, cacheOnlyWeb: Boolean?) {
             .fitCenter()
             .into(imageView)
     }
+}
+
+@BindingAdapter("layoutMarginStart")
+fun setLayoutMarginStart(view: View, dimen: Float) {
+    val layoutParams = view.layoutParams as MarginLayoutParams
+    layoutParams.updateMarginsRelative(dimen.toInt())
+    view.layoutParams = layoutParams
 }

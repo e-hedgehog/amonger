@@ -39,16 +39,37 @@
                 tools:src="@tools:sample/avatars"
                 tools:ignore="ContentDescription" />
 
+            <Space
+                android:id="@+id/spacer"
+                android:layout_width="16dp"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toEndOf="@id/player_image"
+                app:layout_constraintTop_toTopOf="@id/player_image"
+                app:layout_constraintBottom_toBottomOf="@id/player_image"/>
+
+            <ImageView
+                android:id="@+id/player_host_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/host_icon"
+                android:visibility="@{player.host == true ? View.VISIBLE : View.GONE}"
+                app:layout_constraintTop_toTopOf="@id/player_name"
+                app:layout_constraintStart_toEndOf="@id/spacer"
+                app:layout_constraintBottom_toBottomOf="@id/player_name"
+                tools:ignore="ContentDescription" />
+
             <TextView
                 android:id="@+id/player_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                app:layoutMarginStart="@{player.host == true ? @dimen/space_4dp : @dimen/space_0dp}"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_color"
                 android:text="@{player.name}"
-                app:layout_constraintStart_toEndOf="@id/player_image"
+                app:layout_constraintStart_toEndOf="@id/player_host_icon"
                 app:layout_constraintTop_toTopOf="@id/player_image"
                 tools:text="zer0iq"/>
 
@@ -73,7 +94,7 @@
                 android:layout_marginTop="4dp"
                 android:textSize="18sp"
                 android:text="@{player.code}"
-                app:layout_constraintStart_toStartOf="@id/player_name"
+                app:layout_constraintStart_toStartOf="@id/player_host_icon"
                 app:layout_constraintTop_toBottomOf="@id/player_name"
                 tools:text="ponypublic#9178"/>
 
@@ -85,7 +106,7 @@
                 android:textSize="16sp"
                 android:text="@{player.notes}"
                 android:visibility="@{player.notes == null || player.notes.empty ? View.GONE : View.VISIBLE}"
-                app:layout_constraintStart_toStartOf="@id/player_name"
+                app:layout_constraintStart_toStartOf="@id/player_code"
                 app:layout_constraintTop_toBottomOf="@id/player_code"
                 tools:text="ваш хост"/>
 
