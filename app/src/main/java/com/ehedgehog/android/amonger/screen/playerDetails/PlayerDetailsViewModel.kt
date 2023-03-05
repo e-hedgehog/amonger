@@ -10,13 +10,14 @@ import com.ehedgehog.android.amonger.Application
 import com.ehedgehog.android.amonger.screen.PlayerItem
 import com.ehedgehog.android.amonger.screen.PlayerItemTemp
 import com.ehedgehog.android.amonger.screen.PlayersManager
+import com.ehedgehog.android.amonger.screen.base.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : ViewModel() {
+class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : BaseViewModel() {
 
     private val viewModelJob = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -30,9 +31,6 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : ViewModel(
 
     private val _navigateToImageCropper = MutableLiveData<Boolean>()
     val navigateToImageCropper: LiveData<Boolean> get() = _navigateToImageCropper
-
-    private val _showErrorSnackbar = MutableLiveData<String>()
-    val showErrorSnackbar: LiveData<String> get() = _showErrorSnackbar
 
     private val _isOnline = MutableLiveData<Boolean>()
     val isOnline: LiveData<Boolean> get() = _isOnline
@@ -71,15 +69,6 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : ViewModel(
     @SuppressLint("NullSafeMutableLiveData")
     fun displayImageCropperComplete() {
         _navigateToImageCropper.value = null
-    }
-
-    fun displayErrorSnackbar(message: String) {
-        _showErrorSnackbar.value = message
-    }
-
-    @SuppressLint("NullSafeMutableLiveData")
-    fun displayErrorSnackbarComplete() {
-        _showErrorSnackbar.value = null
     }
 
     fun savePlayer() {

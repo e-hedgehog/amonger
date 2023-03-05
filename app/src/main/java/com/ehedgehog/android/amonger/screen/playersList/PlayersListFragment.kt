@@ -6,27 +6,24 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.ehedgehog.android.amonger.R
 import com.ehedgehog.android.amonger.databinding.FragmentPlayersListBinding
 import com.ehedgehog.android.amonger.screen.PlayersPreferences
+import com.ehedgehog.android.amonger.screen.base.BaseFragment
 import com.ehedgehog.android.amonger.screen.playersList.PlayersListViewModel.ThemeMode
 
-class PlayersListFragment : Fragment(), OnQueryTextListener, MenuProvider {
+class PlayersListFragment : BaseFragment<PlayersListViewModel, FragmentPlayersListBinding>(R.layout.fragment_players_list), OnQueryTextListener, MenuProvider {
 
-    private val viewModel: PlayersListViewModel by viewModels()
-    private lateinit var binding: FragmentPlayersListBinding
+    override val viewModel: PlayersListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_players_list, container, false)
-        binding.lifecycleOwner = this
+        val view = super.onCreateView(inflater, container, savedInstanceState)
         binding.viewModel = viewModel
 
         binding.playersRecyclerView.adapter = PlayersListAdapter(
@@ -56,7 +53,7 @@ class PlayersListFragment : Fragment(), OnQueryTextListener, MenuProvider {
 
         viewModel.loadStoredPlayers()
 
-        return binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -4,18 +4,18 @@ import android.annotation.SuppressLint
 import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.ehedgehog.android.amonger.Application
 import com.ehedgehog.android.amonger.R
 import com.ehedgehog.android.amonger.screen.PlayerItem
 import com.ehedgehog.android.amonger.screen.PlayersManager
+import com.ehedgehog.android.amonger.screen.base.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PlayersListViewModel : ViewModel() {
+class PlayersListViewModel : BaseViewModel() {
 
     enum class SearchMode {CODE, NAME}
     enum class ThemeMode {DAY, NIGHT}

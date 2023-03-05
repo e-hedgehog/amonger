@@ -1,16 +1,12 @@
 package com.ehedgehog.android.amonger.screen.playerDetails
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
@@ -20,11 +16,11 @@ import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.ehedgehog.android.amonger.R
 import com.ehedgehog.android.amonger.databinding.FragmentPlayerDetailsBinding
+import com.ehedgehog.android.amonger.screen.base.BaseFragment
 import com.ehedgehog.android.amonger.screen.playerDetails.PlayerDetailsViewModel.PlayerDetailsViewModelFactory
-import com.google.android.material.snackbar.Snackbar
 import java.io.File
 
-class PlayerDetailsFragment: Fragment(), MenuProvider {
+class PlayerDetailsFragment: BaseFragment<PlayerDetailsViewModel, FragmentPlayerDetailsBinding>(R.layout.fragment_player_details), MenuProvider {
 
     private val cropImage = registerForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful) {
@@ -36,18 +32,15 @@ class PlayerDetailsFragment: Fragment(), MenuProvider {
         }
     }
 
-    private val viewModel: PlayerDetailsViewModel by viewModels {
+    override val viewModel: PlayerDetailsViewModel by viewModels {
         PlayerDetailsViewModelFactory(PlayerDetailsFragmentArgs.fromBundle(requireArguments()).player)
     }
-    private lateinit var binding: FragmentPlayerDetailsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater,
-            R.layout.fragment_player_details, container, false)
-        binding.lifecycleOwner = this
+        val view = super.onCreateView(inflater, container, savedInstanceState)
         binding.viewModel = viewModel
         binding.playerImage.clipToOutline = true
 
@@ -77,19 +70,7 @@ class PlayerDetailsFragment: Fragment(), MenuProvider {
             if (it == false) findNavController().navigateUp()
         }
 
-        viewModel.showErrorSnackbar.observe(viewLifecycleOwner) { message ->
-            message?.let {
-                hideSoftKeyboard()
-                Snackbar.make(
-                    binding.playerDetailsContainer,
-                    it,
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                viewModel.displayErrorSnackbarComplete()
-            }
-        }
-
-        return binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -108,13 +89,6 @@ class PlayerDetailsFragment: Fragment(), MenuProvider {
                 true
             }
             else -> false
-        }
-    }
-
-    private fun hideSoftKeyboard() {
-        requireActivity().currentFocus?.let { view ->
-            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            imm?.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 
