@@ -10,5 +10,5 @@
     <string name="notes_label">Notes</string>
     <string name="aka_label">Also known as</string>
     <string name="theme_mode_label">Night mode</string>
-    <string name="remove_label">Remove</string>
+    <string name="delete_label">Delete</string>
 </resources>

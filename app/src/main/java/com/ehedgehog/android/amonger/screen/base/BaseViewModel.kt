@@ -10,6 +10,9 @@ abstract class BaseViewModel: ViewModel() {
     private val _showErrorSnackbar = MutableLiveData<String>()
     val showErrorSnackbar: LiveData<String> get() = _showErrorSnackbar
 
+    private val _showConfirmationDialog = MutableLiveData<Pair<String, () -> Unit>>()
+    val showConfirmationDialog: LiveData<Pair<String, () -> Unit>> get() = _showConfirmationDialog
+
     fun displayErrorSnackbar(message: String) {
         _showErrorSnackbar.value = message
     }
@@ -17,6 +20,15 @@ abstract class BaseViewModel: ViewModel() {
     @SuppressLint("NullSafeMutableLiveData")
     fun displayErrorSnackbarComplete() {
         _showErrorSnackbar.value = null
+    }
+
+    fun displayConfirmationDialog(message: String, onConfirm: () -> Unit) {
+        _showConfirmationDialog.value = Pair(message, onConfirm)
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun displayConfirmationDialogCompleted() {
+        _showConfirmationDialog.value = null
     }
 
 }

@@ -1,5 +1,6 @@
 package com.ehedgehog.android.amonger.screen.base
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -33,6 +34,17 @@ abstract class BaseFragment<VM: BaseViewModel, B: ViewDataBinding>(@LayoutRes va
                     Snackbar.LENGTH_SHORT
                 ).show()
                 viewModel.displayErrorSnackbarComplete()
+            }
+        }
+
+        viewModel.showConfirmationDialog.observe(viewLifecycleOwner) { pair ->
+            pair?.let {
+                AlertDialog.Builder(requireContext())
+                    .setMessage(pair.first)
+                    .setPositiveButton("Yes") { _, _ -> pair.second.invoke() }
+                    .setNegativeButton("Cancel", null)
+                    .show()
+                viewModel.displayConfirmationDialogCompleted()
             }
         }
 

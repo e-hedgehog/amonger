@@ -98,7 +98,13 @@ class PlayersListViewModel : BaseViewModel() {
         }
     }
 
-    fun removeStoredPlayer(player: PlayerItem) {
+    fun removePlayer(player: PlayerItem) {
+        displayConfirmationDialog("Are you sure you want to delete this player?") {
+            removeStoredPlayer(player)
+        }
+    }
+
+    private fun removeStoredPlayer(player: PlayerItem) {
         coroutineScope.launch {
             playersManager.removePlayer(player)
         }
@@ -107,7 +113,7 @@ class PlayersListViewModel : BaseViewModel() {
     fun onContextMenuItemClicked(menuItem: MenuItem, player: PlayerItem): Boolean {
         return when (menuItem.itemId) {
             R.id.context_remove_item -> {
-                removeStoredPlayer(player)
+                removePlayer(player)
                 true
             }
             else -> false

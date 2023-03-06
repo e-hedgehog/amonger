@@ -3,6 +3,6 @@
 
     <item
         android:id="@+id/context_remove_item"
-        android:title="@string/remove_label" />
+        android:title="@string/delete_label" />
 
 </menu>
