@@ -19,5 +19,6 @@
     <color name="text_color">#1E1919</color>
     <color name="hint_color">#6E6E6E</color>
     <color name="icon_tint">@color/white</color>
+    <color name="chip_color">#e0e0e0</color>
 
 </resources>

@@ -28,6 +28,7 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : BaseViewMo
     val playerIsHost = MutableLiveData<Boolean>()
     val playerNotes = MutableLiveData<String>()
     val playerImageUrl = MutableLiveData<String>()
+    val playerTagsList = MutableLiveData<List<String>>()
 
     private val _navigateToImageCropper = MutableLiveData<Boolean>()
     val navigateToImageCropper: LiveData<Boolean> get() = _navigateToImageCropper
@@ -49,6 +50,7 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : BaseViewMo
         currentPlayer.host?.let { playerIsHost.value = it }
         currentPlayer.notes?.let { playerNotes.value = it }
         currentPlayer.imageUrl?.let { playerImageUrl.value = it }
+        currentPlayer.tags?.let { playerTagsList.value = it }
     }
 
     fun monitorConnectionState() {
@@ -103,7 +105,7 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : BaseViewMo
     }
 
     private suspend fun addPlayer(playerImageUrl: String? = null) {
-        playersManager.addNewPlayer(PlayerItemTemp(playerName.value, playerCode.value, playerAka.value, playerIsHost.value, playerImageUrl, playerNotes.value))
+        playersManager.addNewPlayer(PlayerItemTemp(playerName.value, playerCode.value, playerAka.value, playerIsHost.value, playerImageUrl, playerNotes.value, playerTagsList.value))
     }
 
     private fun updatePlayerWithImage() {
@@ -127,7 +129,7 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : BaseViewMo
 
     private suspend fun updatePlayer(imageUrl: String? = null) {
         val url = imageUrl ?: playerImageUrl.value
-        playersManager.updatePlayer(PlayerItem(currentPlayer.id, playerName.value, playerCode.value, playerAka.value, playerIsHost.value, url, playerNotes.value))
+        playersManager.updatePlayer(PlayerItem(currentPlayer.id, playerName.value, playerCode.value, playerAka.value, playerIsHost.value, url, playerNotes.value, playerTagsList.value))
     }
 
     override fun onCleared() {

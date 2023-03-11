@@ -11,7 +11,8 @@ open class PlayerItem(
     val aka: String? = null,
     val host: Boolean? = null,
     val imageUrl:String? = null,
-    val notes: String? = null
+    val notes: String? = null,
+    val tags: List<String>? = null
 ): Parcelable {
     override fun equals(other: Any?): Boolean {
         return other is PlayerItem &&
@@ -21,7 +22,8 @@ open class PlayerItem(
                 other.aka == aka &&
                 other.host == host &&
                 other.imageUrl == imageUrl &&
-                other.notes == notes
+                other.notes == notes &&
+                other.tags == tags
     }
 
     override fun hashCode(): Int {
@@ -35,5 +37,6 @@ data class PlayerItemTemp(
     val aka: String? = null,
     val host: Boolean? = null,
     val imageUrl:String? = null,
-    val notes: String? = null
+    val notes: String? = null,
+    val tags: List<String>? = null
 )

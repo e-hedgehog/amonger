@@ -57,7 +57,8 @@ class PlayersManager(private val playersReference: DatabaseReference, private va
                 playerTemp.aka,
                 playerTemp.host,
                 playerTemp.imageUrl,
-                playerTemp.notes
+                playerTemp.notes,
+                playerTemp.tags
             )
         )?.await()
         newPlayerRef = null

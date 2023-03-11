@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.forEach
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
@@ -18,6 +19,7 @@ import com.ehedgehog.android.amonger.R
 import com.ehedgehog.android.amonger.databinding.FragmentPlayerDetailsBinding
 import com.ehedgehog.android.amonger.screen.base.BaseFragment
 import com.ehedgehog.android.amonger.screen.playerDetails.PlayerDetailsViewModel.PlayerDetailsViewModelFactory
+import com.google.android.material.chip.Chip
 import java.io.File
 
 class PlayerDetailsFragment: BaseFragment<PlayerDetailsViewModel, FragmentPlayerDetailsBinding>(R.layout.fragment_player_details), MenuProvider {
@@ -63,6 +65,21 @@ class PlayerDetailsFragment: BaseFragment<PlayerDetailsViewModel, FragmentPlayer
                     )
                 )
                 viewModel.displayImageCropperComplete()
+            }
+        }
+
+        viewModel.playerIsHost.observe(viewLifecycleOwner) {
+            binding.chipHost.isChecked = it
+        }
+        
+        binding.playerChipGroup.forEach {
+            (it as? Chip)?.setOnCheckedChangeListener { _, _ ->
+                val checkedTitles = mutableListOf<String>()
+                binding.playerChipGroup.checkedChipIds.forEach { id ->
+                    checkedTitles.add(binding.playerChipGroup.findViewById<Chip>(id).text.toString())
+                }
+                binding.playerHostSwitch.isChecked = checkedTitles.contains(getString(R.string.host_label))
+                viewModel.playerTagsList.value = checkedTitles
             }
         }
 

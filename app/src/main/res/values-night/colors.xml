@@ -5,4 +5,5 @@
     <color name="text_color">#EBE4E4</color>
     <color name="hint_color">#6E6E6E</color>
     <color name="icon_tint">@color/black</color>
+    <color name="chip_color">#424242</color>
 </resources>

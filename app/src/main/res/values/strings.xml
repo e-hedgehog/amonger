@@ -11,4 +11,16 @@
     <string name="aka_label">Also known as</string>
     <string name="theme_mode_label">Night mode</string>
     <string name="delete_label">Delete</string>
+
+    <!--Chips-->
+    <string name="skeld_label">Skeld</string>
+    <string name="polus_label">Polus</string>
+    <string name="airship_label">Airship</string>
+    <string name="all_maps_label">All maps</string>
+    <string name="host_label">Host</string>
+    <string name="low_cd_player_label">10cd player</string>
+    <string name="medium_cd_player_label">15cd player</string>
+    <string name="high_cd_player_label">17+ cd player</string>
+    <string name="old_label">Old</string>
+    <string name="beginner_label">Beginner</string>
 </resources>
