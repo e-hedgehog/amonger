@@ -81,6 +81,7 @@
             android:src="@drawable/ic_add"
             app:backgroundTint="@color/red_500"
             app:tint="@color/icon_tint"
+            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
             tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
