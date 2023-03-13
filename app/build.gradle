@@ -22,9 +22,24 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    flavorDimensions "appType"
+    productFlavors {
+        user {
+            dimension "appType"
+            applicationIdSuffix ".user"
+        }
+        moder {
+            dimension "appType"
+            applicationIdSuffix ".moder"
         }
     }
     compileOptions {
