@@ -11,7 +11,7 @@ class PlayersPreferences {
 
         fun getStoredThemeMode(context: Context): PlayersListViewModel.ThemeMode {
             val index = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
-                .getInt(PREF_THEME_MODE, -1)
+                .getInt(PREF_THEME_MODE, 0)
             return PlayersListViewModel.ThemeMode.values()[index]
         }
 

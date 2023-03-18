@@ -9,6 +9,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
+import com.ehedgehog.android.amonger.BuildConfig
 import com.ehedgehog.android.amonger.R
 import com.ehedgehog.android.amonger.databinding.FragmentPlayersListBinding
 import com.ehedgehog.android.amonger.screen.PlayersPreferences
@@ -25,6 +26,10 @@ class PlayersListFragment : BaseFragment<PlayersListViewModel, FragmentPlayersLi
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         binding.viewModel = viewModel
+
+        @Suppress("KotlinConstantConditions")
+        if (BuildConfig.FLAVOR == "user")
+            binding.addPlayerButton.visibility = View.GONE
 
         binding.playersRecyclerView.adapter = PlayersListAdapter(
             viewModel::displayPlayerDetails,

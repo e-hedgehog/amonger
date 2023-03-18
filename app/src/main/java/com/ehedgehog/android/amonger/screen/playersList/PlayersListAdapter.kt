@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.ehedgehog.android.amonger.BuildConfig
 import com.ehedgehog.android.amonger.R
 import com.ehedgehog.android.amonger.databinding.ListItemPlayerBinding
 import com.ehedgehog.android.amonger.screen.PlayerItem
@@ -30,16 +31,19 @@ class PlayersListAdapter(
         )
     }
 
+    @Suppress("KotlinConstantConditions")
     override fun onBindViewHolder(holder: PlayerItemViewHolder, position: Int) {
         val player = getItem(position)
         holder.itemView.setOnClickListener { clickListener(player) }
 
-        val popupMenu = PopupMenu(holder.itemView.context, holder.itemView, Gravity.END)
-        popupMenu.inflate(R.menu.list_item_player_context)
-        popupMenu.setOnMenuItemClickListener { contextMenuItemListener(it, player) }
-        holder.itemView.setOnLongClickListener {
-            popupMenu.show()
-            true
+        if (BuildConfig.FLAVOR != "user") {
+            val popupMenu = PopupMenu(holder.itemView.context, holder.itemView, Gravity.END)
+            popupMenu.inflate(R.menu.list_item_player_context)
+            popupMenu.setOnMenuItemClickListener { contextMenuItemListener(it, player) }
+            holder.itemView.setOnLongClickListener {
+                popupMenu.show()
+                true
+            }
         }
 
         holder.bind(player)

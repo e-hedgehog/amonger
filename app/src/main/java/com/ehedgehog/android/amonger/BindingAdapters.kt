@@ -3,6 +3,7 @@ package com.ehedgehog.android.amonger
 import android.content.Context
 import android.util.Log
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.MarginLayoutParams
@@ -53,17 +54,30 @@ fun bindChipGroup(chipGroup: ChipGroup, checkedList: List<String>?) {
     }
 }
 
-@BindingAdapter("titlesList")
-fun createChipGroup(chipGroup: ChipGroup, chipTitles: List<String>?) {
+@BindingAdapter("titlesList", "isSmallSize", requireAll = false)
+fun createChipGroup(chipGroup: ChipGroup, chipTitles: List<String>?, smallSize: Boolean) {
+    chipGroup.removeAllViews()
     chipTitles?.forEach {
         val context = chipGroup.context
         val textView = TextView(context)
+        val size: Float
+        val textSize: Float
+
+        if (smallSize) {
+            size = 24F
+            textSize = 12F
+        } else {
+            size = 32F
+            textSize = 14F
+            textView.gravity = Gravity.CENTER
+        }
+
         textView.setBackgroundResource(R.drawable.tag_shape)
         textView.minHeight = dpToPx(context, 10F).toInt()
-        textView.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, dpToPx(context, 24F).toInt())
+        textView.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, dpToPx(context, size).toInt())
         textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
         textView.text = it
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12F)
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize)
         textView.setTextColor(ContextCompat.getColor(context, R.color.text_color))
         chipGroup.addView(textView)
     }
