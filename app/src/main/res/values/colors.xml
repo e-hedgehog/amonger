@@ -14,7 +14,9 @@
     <color name="pink_a200">#FF4081</color>
     <color name="pink_a700">#c51162</color>
     <color name="divider">#BDBDBD</color>
+
     <color name="search_color">@color/red_25</color>
+    <color name="search_icons_color">#726e6d</color>
     <color name="card_color">#FFFBFB</color>
     <color name="text_color">#1E1919</color>
     <color name="hint_color">#6E6E6E</color>

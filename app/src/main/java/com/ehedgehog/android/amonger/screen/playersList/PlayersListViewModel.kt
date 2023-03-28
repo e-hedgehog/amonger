@@ -29,6 +29,9 @@ class PlayersListViewModel : BaseViewModel() {
     private val _themeMode = MutableLiveData<ThemeMode>().apply { value = ThemeMode.DAY }
     val themeMode: LiveData<ThemeMode> get() = _themeMode
 
+    private val _filtersVisible = MutableLiveData<Boolean>().apply { value = false }
+    val filtersVisible: LiveData<Boolean> get() = _filtersVisible
+
     private var fullPlayersList: List<PlayerItem>? = emptyList()
     private val _playersList = MutableLiveData<List<PlayerItem>>()
     val playersList: LiveData<List<PlayerItem>> get() = _playersList
@@ -66,6 +69,10 @@ class PlayersListViewModel : BaseViewModel() {
 
     fun setThemeMode(themeMode: ThemeMode) {
         _themeMode.value = themeMode
+    }
+
+    fun filtersButtonClicked() {
+        filtersVisible.value?.let { _filtersVisible.value = !it }
     }
 
     fun searchPlayers(query: String) {

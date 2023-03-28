@@ -1,16 +1,23 @@
 package com.ehedgehog.android.amonger.screen.playersList
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.*
+import android.view.ViewGroup.LayoutParams
+import android.view.ViewGroup.MarginLayoutParams
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.updateMarginsRelative
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.ehedgehog.android.amonger.BuildConfig
 import com.ehedgehog.android.amonger.R
+import com.ehedgehog.android.amonger.databinding.ButtonSearchFiltersBinding
 import com.ehedgehog.android.amonger.databinding.FragmentPlayersListBinding
 import com.ehedgehog.android.amonger.screen.PlayersPreferences
 import com.ehedgehog.android.amonger.screen.base.BaseFragment
@@ -40,6 +47,16 @@ class PlayersListFragment : BaseFragment<PlayersListViewModel, FragmentPlayersLi
         binding.playersSearch.setOnQueryTextListener(this)
 
         viewModel.setThemeMode(PlayersPreferences.getStoredThemeMode(requireContext()))
+
+        val filtersButtonBinding: ButtonSearchFiltersBinding =
+            DataBindingUtil.inflate(inflater, R.layout.button_search_filters, null, false)
+        filtersButtonBinding.lifecycleOwner = viewLifecycleOwner
+        filtersButtonBinding.viewModel = viewModel
+        val layoutParams = LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT)
+        val margin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16F, resources.displayMetrics)
+        (layoutParams as MarginLayoutParams).updateMarginsRelative(end = margin.toInt())
+        filtersButtonBinding.filtersButton.layoutParams = layoutParams
+        (binding.playersSearch.getChildAt(0) as LinearLayout).addView(filtersButtonBinding.filtersButton)
 
         viewModel.searchMode.observe(viewLifecycleOwner) {
             onQueryTextChange(binding.playersSearch.query.toString())
