@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="search_color">#262323</color>
+    <color name="search_icons_color">#bdbdbd</color>
     <color name="card_color">#1E1B1B</color>
     <color name="text_color">#EBE4E4</color>
     <color name="hint_color">#6E6E6E</color>
