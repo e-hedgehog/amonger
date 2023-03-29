@@ -23,4 +23,6 @@
     <string name="high_cd_player_label">17+ cd player</string>
     <string name="old_label">Old</string>
     <string name="beginner_label">Beginner</string>
+    <string name="map_filter_label">Maps</string>
+    <string name="cd_filter_label">Cooldown</string>
 </resources>
