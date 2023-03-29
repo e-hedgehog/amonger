@@ -8,6 +8,7 @@
             name="viewModel"
             type="com.ehedgehog.android.amonger.screen.playersList.PlayersListViewModel" />
 
+        <import type="android.view.View" />
         <import type="com.ehedgehog.android.amonger.screen.playersList.PlayersListViewModel.SearchMode" />
     </data>
 
@@ -52,6 +53,57 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
+            <HorizontalScrollView
+                android:id="@+id/search_filters_scroll_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="@{viewModel.filtersVisible == false ? View.GONE : View.VISIBLE}"
+                app:layout_constraintStart_toStartOf="@id/search_mode_button"
+                app:layout_constraintTop_toBottomOf="@id/players_search"
+                app:layout_constraintEnd_toEndOf="@id/players_search">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/search_filter_chips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:singleLine="true"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:id="@+id/filter_map"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/map_filter_label"
+                        app:ensureMinTouchTargetSize="false"
+                        app:closeIconEnabled="true"
+                        app:closeIcon="@drawable/ic_arrow_dropdown"
+                        android:checkable="false"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:id="@+id/filter_cd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cd_filter_label"
+                        app:ensureMinTouchTargetSize="false"
+                        app:closeIconEnabled="true"
+                        app:closeIcon="@drawable/ic_arrow_dropdown"
+                        android:checkable="false"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:id="@+id/filter_host"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/host_label"
+                        app:ensureMinTouchTargetSize="false"/>
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </HorizontalScrollView>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/players_recycler_view"
                 android:layout_width="match_parent"
@@ -62,7 +114,7 @@
                 app:dataList="@{viewModel.playersList}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/players_search"
+                app:layout_constraintTop_toBottomOf="@id/search_filters_scroll_container"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:itemCount="10"
