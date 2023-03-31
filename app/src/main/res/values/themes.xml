@@ -15,4 +15,10 @@
         <item name="android:editTextColor">@color/text_color</item>
         <item name="android:editTextBackground">@drawable/edit_text_shape</item>
     </style>
+
+    <style name="ChipFilterCustom" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="checkedIconEnabled">false</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="chipBackgroundColor">@color/filter_chip_color</item>
+    </style>
 </resources>
