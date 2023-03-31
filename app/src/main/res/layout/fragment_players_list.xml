@@ -57,7 +57,7 @@
                 android:id="@+id/search_filters_scroll_container"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:visibility="@{viewModel.filtersVisible == false ? View.GONE : View.VISIBLE}"
                 app:layout_constraintStart_toStartOf="@id/search_mode_button"
                 app:layout_constraintTop_toBottomOf="@id/players_search"
@@ -71,29 +71,29 @@
                     tools:visibility="visible">
 
                     <com.google.android.material.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        style="@style/ChipFilterCustom"
                         android:id="@+id/filter_map"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/map_filter_label"
+                        android:checkable="false"
                         app:ensureMinTouchTargetSize="false"
                         app:closeIconEnabled="true"
-                        app:closeIcon="@drawable/ic_arrow_dropdown"
-                        android:checkable="false"/>
+                        app:closeIcon="@drawable/ic_arrow_dropdown" />
 
                     <com.google.android.material.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        style="@style/ChipFilterCustom"
                         android:id="@+id/filter_cd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/cd_filter_label"
+                        android:checkable="false"
                         app:ensureMinTouchTargetSize="false"
                         app:closeIconEnabled="true"
-                        app:closeIcon="@drawable/ic_arrow_dropdown"
-                        android:checkable="false"/>
+                        app:closeIcon="@drawable/ic_arrow_dropdown" />
 
                     <com.google.android.material.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        style="@style/ChipFilterCustom"
                         android:id="@+id/filter_host"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
