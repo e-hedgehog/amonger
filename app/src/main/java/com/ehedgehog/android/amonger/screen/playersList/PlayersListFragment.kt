@@ -1,6 +1,7 @@
 package com.ehedgehog.android.amonger.screen.playersList
 
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.ViewGroup.LayoutParams
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.forEach
 import androidx.core.view.updateMarginsRelative
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -22,6 +24,7 @@ import com.ehedgehog.android.amonger.databinding.FragmentPlayersListBinding
 import com.ehedgehog.android.amonger.screen.PlayersPreferences
 import com.ehedgehog.android.amonger.screen.base.BaseFragment
 import com.ehedgehog.android.amonger.screen.playersList.PlayersListViewModel.ThemeMode
+import com.google.android.material.chip.Chip
 
 class PlayersListFragment : BaseFragment<PlayersListViewModel, FragmentPlayersListBinding>(R.layout.fragment_players_list), OnQueryTextListener, MenuProvider {
 
@@ -60,6 +63,14 @@ class PlayersListFragment : BaseFragment<PlayersListViewModel, FragmentPlayersLi
 
         viewModel.searchMode.observe(viewLifecycleOwner) {
             onQueryTextChange(binding.playersSearch.query.toString())
+        }
+
+        viewModel.selectedFiltersList.observe(viewLifecycleOwner) {
+            it?.let {
+                Log.i("FiltersTest", "selected filters observer")
+                if (it.isEmpty()) binding.searchFilterChips.forEach { view -> (view as Chip).isChecked = false }
+                viewModel.searchPlayers(binding.playersSearch.query.toString())
+            }
         }
 
         viewModel.navigateToSelectedPlayer.observe(viewLifecycleOwner) { player ->

@@ -1,6 +1,7 @@
 package com.ehedgehog.android.amonger.screen.playersList
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -31,6 +32,9 @@ class PlayersListViewModel : BaseViewModel() {
 
     private val _filtersVisible = MutableLiveData<Boolean>().apply { value = false }
     val filtersVisible: LiveData<Boolean> get() = _filtersVisible
+
+    private val _selectedFiltersList = MutableLiveData<MutableMap<String, String>>().apply { value = mutableMapOf() }
+    val selectedFiltersList: LiveData<MutableMap<String, String>> get() = _selectedFiltersList
 
     private var fullPlayersList: List<PlayerItem>? = emptyList()
     private val _playersList = MutableLiveData<List<PlayerItem>>()
@@ -72,7 +76,10 @@ class PlayersListViewModel : BaseViewModel() {
     }
 
     fun filtersButtonClicked() {
-        filtersVisible.value?.let { _filtersVisible.value = !it }
+        filtersVisible.value?.let {
+            _filtersVisible.value = !it
+            if (filtersVisible.value == false) _selectedFiltersList.value = mutableMapOf()
+        }
     }
 
     fun searchPlayers(query: String) {
@@ -88,7 +95,25 @@ class PlayersListViewModel : BaseViewModel() {
                 }
             }
         }
-        _playersList.value = resultList
+
+        if (!selectedFiltersList.value.isNullOrEmpty()) {
+            Log.i("FiltersTest", "filtration")
+            _playersList.value = resultList.filter { item -> item.tags?.containsAll(selectedFiltersList.value!!.values) == true }
+        } else
+            _playersList.value = resultList
+    }
+
+    fun applyFilter(key: String, filter: CharSequence) {
+        val filtersList = selectedFiltersList.value
+        if (filtersList?.contains(key) == true && (filtersList[key] == filter || filter == "Not selected")) {
+            Log.i("FiltersTest", "minus filter")
+            filtersList.remove(key)
+        } else {
+            Log.i("FiltersTest", "plus filter")
+            filtersList?.put(key, filter.toString())
+        }
+        Log.i("FiltersTest", "applyFilter($filter): $filtersList")
+        _selectedFiltersList.value = filtersList
     }
 
     fun loadStoredPlayers() {

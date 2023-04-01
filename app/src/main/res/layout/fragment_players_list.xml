@@ -77,6 +77,9 @@
                         android:layout_height="wrap_content"
                         android:text="@string/map_filter_label"
                         android:checkable="false"
+                        app:addMenuItems="@{@stringArray/map_filter_variants}"
+                        app:defaultText="@{@string/map_filter_label}"
+                        app:onMenuItemClick="@{(item) -> viewModel.applyFilter(`map`, item)}"
                         app:ensureMinTouchTargetSize="false"
                         app:closeIconEnabled="true"
                         app:closeIcon="@drawable/ic_arrow_dropdown" />
@@ -88,6 +91,9 @@
                         android:layout_height="wrap_content"
                         android:text="@string/cd_filter_label"
                         android:checkable="false"
+                        app:addMenuItems="@{@stringArray/cd_filter_variants}"
+                        app:defaultText="@{@string/cd_filter_label}"
+                        app:onMenuItemClick="@{(item) -> viewModel.applyFilter(`cd`, item)}"
                         app:ensureMinTouchTargetSize="false"
                         app:closeIconEnabled="true"
                         app:closeIcon="@drawable/ic_arrow_dropdown" />
@@ -98,6 +104,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/host_label"
+                        android:onClick="@{() -> viewModel.applyFilter(`host`, filterHost.getText())}"
                         app:ensureMinTouchTargetSize="false"/>
 
                 </com.google.android.material.chip.ChipGroup>
