@@ -25,4 +25,20 @@
     <string name="beginner_label">Beginner</string>
     <string name="map_filter_label">Maps</string>
     <string name="cd_filter_label">Cooldown</string>
+
+    <string-array name="map_filter_variants">
+        <item>Not selected</item>
+        <item>@string/skeld_label</item>
+        <item>@string/polus_label</item>
+        <item>@string/airship_label</item>
+        <item>@string/all_maps_label</item>
+    </string-array>
+
+    <string-array name="cd_filter_variants">
+        <item>Not selected</item>
+        <item>@string/low_cd_player_label</item>
+        <item>@string/medium_cd_player_label</item>
+        <item>@string/high_cd_player_label</item>
+    </string-array>
+
 </resources>

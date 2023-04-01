@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
@@ -41,6 +42,27 @@ fun bindImageView(imageView: ImageView, url: String?, cacheOnlyWeb: Boolean?) {
         builder.centerCrop()
             .fitCenter()
             .into(imageView)
+    }
+}
+
+interface OnItemClick {
+    fun execute(item: CharSequence)
+}
+
+@BindingAdapter("addMenuItems", "defaultText", "onMenuItemClick", requireAll = false)
+fun bindMenuChip(chip: Chip, menuItems: Array<String>, defaultText: String, onMenuItemClick: OnItemClick) {
+    val menu = PopupMenu(chip.context, chip)
+    menuItems.forEach { menu.menu.add(it) }
+    chip.setOnClickListener { menu.show() }
+
+    menu.setOnMenuItemClickListener {
+        onMenuItemClick.execute(it.toString())
+        val isSelected = it.toString() != menuItems[0]
+        val isRepeatedClick = it.toString() == chip.text
+        chip.text = if (isRepeatedClick || !isSelected) defaultText else it.toString()
+        chip.isCheckable = isSelected && !isRepeatedClick
+        chip.isChecked = isSelected && !isRepeatedClick
+        true
     }
 }
 
