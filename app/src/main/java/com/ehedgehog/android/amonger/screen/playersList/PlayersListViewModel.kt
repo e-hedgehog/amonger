@@ -30,11 +30,13 @@ class PlayersListViewModel : BaseViewModel() {
     private val _themeMode = MutableLiveData<ThemeMode>().apply { value = ThemeMode.DAY }
     val themeMode: LiveData<ThemeMode> get() = _themeMode
 
+    val searchQuery = MutableLiveData<String>()
+
     private val _filtersVisible = MutableLiveData<Boolean>().apply { value = false }
     val filtersVisible: LiveData<Boolean> get() = _filtersVisible
 
-    private val _selectedFiltersList = MutableLiveData<MutableMap<String, String>>().apply { value = mutableMapOf() }
-    val selectedFiltersList: LiveData<MutableMap<String, String>> get() = _selectedFiltersList
+    private val _selectedFiltersMap = MutableLiveData<MutableMap<String, String>>().apply { value = mutableMapOf() }
+    val selectedFiltersMap: LiveData<MutableMap<String, String>> get() = _selectedFiltersMap
 
     private var fullPlayersList: List<PlayerItem>? = emptyList()
     private val _playersList = MutableLiveData<List<PlayerItem>>()
@@ -78,7 +80,7 @@ class PlayersListViewModel : BaseViewModel() {
     fun filtersButtonClicked() {
         filtersVisible.value?.let {
             _filtersVisible.value = !it
-            if (filtersVisible.value == false) _selectedFiltersList.value = mutableMapOf()
+            if (filtersVisible.value == false) _selectedFiltersMap.value = mutableMapOf()
         }
     }
 
@@ -96,24 +98,23 @@ class PlayersListViewModel : BaseViewModel() {
             }
         }
 
-        if (!selectedFiltersList.value.isNullOrEmpty()) {
-            Log.i("FiltersTest", "filtration")
-            _playersList.value = resultList.filter { item -> item.tags?.containsAll(selectedFiltersList.value!!.values) == true }
+        if (!selectedFiltersMap.value.isNullOrEmpty()) {
+            Log.i("FiltersTest", "filtration with ${selectedFiltersMap.value.toString()}")
+            _playersList.value = resultList.filter { item -> item.tags?.containsAll(selectedFiltersMap.value!!.values) == true }
+            Log.i("FiltersTest", "resultList = ${resultList.map { it.name }}")
         } else
             _playersList.value = resultList
     }
 
     fun applyFilter(key: String, filter: CharSequence) {
-        val filtersList = selectedFiltersList.value
-        if (filtersList?.contains(key) == true && (filtersList[key] == filter || filter == "Not selected")) {
-            Log.i("FiltersTest", "minus filter")
-            filtersList.remove(key)
+        val filtersMap = selectedFiltersMap.value
+        if ((filtersMap?.get(key) == filter || filter == "Not selected")) {
+            filtersMap?.remove(key)
         } else {
-            Log.i("FiltersTest", "plus filter")
-            filtersList?.put(key, filter.toString())
+            filtersMap?.put(key, filter.toString())
         }
-        Log.i("FiltersTest", "applyFilter($filter): $filtersList")
-        _selectedFiltersList.value = filtersList
+        Log.i("FiltersTest", "applyFilter($filter): $filtersMap")
+        _selectedFiltersMap.value = filtersMap
     }
 
     fun loadStoredPlayers() {
@@ -121,7 +122,8 @@ class PlayersListViewModel : BaseViewModel() {
             playersManager.fetchStoredPlayers().collect {
                 when {
                     it.isSuccess -> {
-                        _playersList.value = it.getOrNull()
+                        if (selectedFiltersMap.value.isNullOrEmpty() && searchQuery.value.isNullOrEmpty())
+                            _playersList.value = it.getOrNull()
                         fullPlayersList = it.getOrNull()
                     }
                     it.isFailure -> it.exceptionOrNull()?.printStackTrace()

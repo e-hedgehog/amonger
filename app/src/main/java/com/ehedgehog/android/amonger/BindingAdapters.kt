@@ -60,8 +60,9 @@ fun bindMenuChip(chip: Chip, menuItems: Array<String>, defaultText: String, onMe
         val isSelected = it.toString() != menuItems[0]
         val isRepeatedClick = it.toString() == chip.text
         chip.text = if (isRepeatedClick || !isSelected) defaultText else it.toString()
-        chip.isCheckable = isSelected && !isRepeatedClick
+        chip.isCheckable = true
         chip.isChecked = isSelected && !isRepeatedClick
+        chip.isCheckable = false
         true
     }
 }

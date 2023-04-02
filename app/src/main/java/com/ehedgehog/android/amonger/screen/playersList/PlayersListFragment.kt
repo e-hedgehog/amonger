@@ -1,7 +1,6 @@
 package com.ehedgehog.android.amonger.screen.playersList
 
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.ViewGroup.LayoutParams
@@ -65,10 +64,24 @@ class PlayersListFragment : BaseFragment<PlayersListViewModel, FragmentPlayersLi
             onQueryTextChange(binding.playersSearch.query.toString())
         }
 
-        viewModel.selectedFiltersList.observe(viewLifecycleOwner) {
+        if (viewModel.selectedFiltersMap.value?.contains("map") == true) {
+            binding.filterMap.text = viewModel.selectedFiltersMap.value?.get("map")
+            setCheckedFilter(binding.filterMap, checked = true, checkable = false)
+        }
+        if (viewModel.selectedFiltersMap.value?.contains("cd") == true) {
+            binding.filterCd.text = viewModel.selectedFiltersMap.value?.get("cd")
+            setCheckedFilter(binding.filterCd, checked = true, checkable = false)
+        }
+        viewModel.selectedFiltersMap.observe(viewLifecycleOwner) {
             it?.let {
-                Log.i("FiltersTest", "selected filters observer")
-                if (it.isEmpty()) binding.searchFilterChips.forEach { view -> (view as Chip).isChecked = false }
+                if (viewModel.filtersVisible.value == false) {
+                    binding.searchFilterChips.forEach { view ->
+                        val chip = view as Chip
+                        setCheckedFilter(chip, false, chip.text == getString(R.string.host_label))
+                    }
+                    binding.filterMap.setText(R.string.map_filter_label)
+                    binding.filterCd.setText(R.string.cd_filter_label)
+                }
                 viewModel.searchPlayers(binding.playersSearch.query.toString())
             }
         }
@@ -106,6 +119,7 @@ class PlayersListFragment : BaseFragment<PlayersListViewModel, FragmentPlayersLi
     override fun onQueryTextChange(newText: String?): Boolean {
         if (newText != null) {
             viewModel.searchPlayers(newText)
+            viewModel.searchQuery.value = newText
             return true
         }
         return false
@@ -139,6 +153,12 @@ class PlayersListFragment : BaseFragment<PlayersListViewModel, FragmentPlayersLi
         viewModel.setThemeMode(ThemeMode.NIGHT)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         PlayersPreferences.setStoredThemeMode(requireContext(), ThemeMode.NIGHT)
+    }
+
+    private fun setCheckedFilter(filter: Chip, checked: Boolean, checkable: Boolean) {
+        filter.isCheckable = true
+        filter.isChecked = checked
+        filter.isCheckable = checkable
     }
 
 }
