@@ -10,6 +10,8 @@ import com.ehedgehog.android.amonger.R
 import com.ehedgehog.android.amonger.screen.PlayerItem
 import com.ehedgehog.android.amonger.screen.PlayersManager
 import com.ehedgehog.android.amonger.screen.base.BaseViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -132,7 +134,12 @@ class PlayersListViewModel : BaseViewModel() {
         }
     }
 
-    fun removePlayer(player: PlayerItem) {
+    private fun removePlayer(player: PlayerItem) {
+        if (Firebase.auth.currentUser == null) {
+            displayErrorSnackbar("You must be authorized to write data.")
+            return
+        }
+
         displayConfirmationDialog("Are you sure you want to delete this player?") {
             removeStoredPlayer(player)
         }

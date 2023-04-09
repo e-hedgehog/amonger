@@ -11,6 +11,8 @@ import com.ehedgehog.android.amonger.screen.PlayerItem
 import com.ehedgehog.android.amonger.screen.PlayerItemTemp
 import com.ehedgehog.android.amonger.screen.PlayersManager
 import com.ehedgehog.android.amonger.screen.base.BaseViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -74,7 +76,10 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : BaseViewMo
     }
 
     fun savePlayer() {
-        if (playerCode.value.isNullOrEmpty() || playerName.value.isNullOrEmpty()) {
+        if (Firebase.auth.currentUser == null) {
+            displayErrorSnackbar("You must be authorized to write data.")
+            return
+        } else if (playerCode.value.isNullOrEmpty() || playerName.value.isNullOrEmpty()) {
             displayErrorSnackbar("You haven't filled out all the required fields. \"Nickname\" and \"Friend code\" are mandatory.")
             return
         }

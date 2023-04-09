@@ -11,6 +11,7 @@
     <string name="aka_label">Also known as</string>
     <string name="theme_mode_label">Night mode</string>
     <string name="delete_label">Delete</string>
+    <string name="auth_failed_message">Anonymous authorization failed. Check your internet connection and try again.</string>
 
     <!--Chips-->
     <string name="skeld_label">Skeld</string>
