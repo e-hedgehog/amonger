@@ -75,39 +75,46 @@
 
             <TextView
                 android:id="@+id/player_aka"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:visibility="@{player.aka == null || player.aka.empty ? View.GONE : View.VISIBLE}"
                 android:text="@{`AKA ` + player.aka}"
-                android:textSize="12sp"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="end"
                 app:layout_constraintBottom_toBottomOf="@id/player_name"
                 app:layout_constraintStart_toEndOf="@id/player_name"
                 app:layout_constraintTop_toTopOf="@id/player_name"
-                app:layout_constraintVertical_bias="0.75"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_bias="0.79"
                 tools:text="AKA 0айкью" />
 
             <TextView
                 android:id="@+id/player_code"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:textSize="18sp"
                 android:text="@{player.code}"
                 app:layout_constraintStart_toStartOf="@id/player_host_icon"
                 app:layout_constraintTop_toBottomOf="@id/player_name"
+                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="ponypublic#9178"/>
 
             <TextView
                 android:id="@+id/player_notes"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:textSize="16sp"
                 android:text="@{player.notes}"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:visibility="@{player.notes == null || player.notes.empty ? View.GONE : View.VISIBLE}"
                 app:layout_constraintStart_toStartOf="@id/player_code"
                 app:layout_constraintTop_toBottomOf="@id/player_code"
+                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="ваш хост"/>
 
             <com.google.android.material.chip.ChipGroup
