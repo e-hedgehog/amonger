@@ -25,7 +25,11 @@ import com.google.android.material.chip.ChipGroup
 @BindingAdapter("dataList")
 fun bindRecyclerView(recyclerView: RecyclerView, data: List<PlayerItem>?) {
     val adapter = recyclerView.adapter as PlayersListAdapter
-    adapter.submitList(data)
+
+    adapter.saveRecyclerViewState(recyclerView.layoutManager?.onSaveInstanceState())
+    adapter.submitList(data) {
+        adapter.recyclerViewState?.let { recyclerView.layoutManager?.onRestoreInstanceState(it) }
+    }
 }
 
 @BindingAdapter("imageUrl", "cacheOnlyWeb", requireAll = false)

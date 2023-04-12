@@ -1,5 +1,6 @@
 package com.ehedgehog.android.amonger.screen.playersList
 
+import android.os.Parcelable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -19,6 +20,9 @@ class PlayersListAdapter(
     private val clickListener: (player: PlayerItem) -> Unit,
     private val contextMenuItemListener: (menuItem: MenuItem, player: PlayerItem) -> Boolean
 ): ListAdapter<PlayerItem, PlayersListAdapter.PlayerItemViewHolder>(DiffCallback) {
+
+    var recyclerViewState: Parcelable? = null
+        private set
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerItemViewHolder {
         return PlayerItemViewHolder(
@@ -47,6 +51,10 @@ class PlayersListAdapter(
         }
 
         holder.bind(player)
+    }
+
+    fun saveRecyclerViewState(state: Parcelable?) {
+        recyclerViewState = state
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<PlayerItem>() {
