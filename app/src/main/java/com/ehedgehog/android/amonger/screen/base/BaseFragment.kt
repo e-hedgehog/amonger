@@ -2,6 +2,9 @@ package com.ehedgehog.android.amonger.screen.base
 
 import android.app.AlertDialog
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -48,6 +51,13 @@ abstract class BaseFragment<VM: BaseViewModel, B: ViewDataBinding>(@LayoutRes va
             }
         }
 
+        viewModel.doIfOnline.observe(viewLifecycleOwner) { action ->
+            action?.let {
+                if (isOnline()) it.invoke() else viewModel.displayErrorSnackbar("No internet connection.")
+                viewModel.doIfOnlineCompleted()
+            }
+        }
+
         return binding.root
     }
 
@@ -55,6 +65,21 @@ abstract class BaseFragment<VM: BaseViewModel, B: ViewDataBinding>(@LayoutRes va
         requireActivity().currentFocus?.let { view ->
             val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             imm?.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
+
+    private fun isOnline(): Boolean {
+        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork) ?: return false
+            return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ||
+                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
+        } else {
+            val networkInfo = connectivityManager.activeNetworkInfo
+            return networkInfo != null && networkInfo.isConnected
         }
     }
 

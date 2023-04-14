@@ -154,7 +154,7 @@ class PlayersListViewModel : BaseViewModel() {
     fun onContextMenuItemClicked(menuItem: MenuItem, player: PlayerItem): Boolean {
         return when (menuItem.itemId) {
             R.id.context_remove_item -> {
-                removePlayer(player)
+                doIfOnline { removePlayer(player) }
                 true
             }
             else -> false

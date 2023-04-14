@@ -46,8 +46,6 @@ class PlayerDetailsFragment: BaseFragment<PlayerDetailsViewModel, FragmentPlayer
         binding.viewModel = viewModel
         binding.playerImage.clipToOutline = true
 
-        viewModel.monitorConnectionState()
-
         viewModel.navigateToImageCropper.observe(viewLifecycleOwner) {
             it?.let {
                 cropImage.launch(

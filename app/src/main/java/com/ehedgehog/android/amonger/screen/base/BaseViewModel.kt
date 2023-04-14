@@ -13,6 +13,9 @@ abstract class BaseViewModel: ViewModel() {
     private val _showConfirmationDialog = MutableLiveData<Pair<String, () -> Unit>>()
     val showConfirmationDialog: LiveData<Pair<String, () -> Unit>> get() = _showConfirmationDialog
 
+    private val _doIfOnline = MutableLiveData<() -> Unit>()
+    val doIfOnline: LiveData<() -> Unit> get() = _doIfOnline
+
     fun displayErrorSnackbar(message: String) {
         _showErrorSnackbar.value = message
     }
@@ -29,6 +32,15 @@ abstract class BaseViewModel: ViewModel() {
     @SuppressLint("NullSafeMutableLiveData")
     fun displayConfirmationDialogCompleted() {
         _showConfirmationDialog.value = null
+    }
+
+    fun doIfOnline(action: () -> Unit) {
+        _doIfOnline.value = action
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun doIfOnlineCompleted() {
+        _doIfOnline.value = null
     }
 
 }

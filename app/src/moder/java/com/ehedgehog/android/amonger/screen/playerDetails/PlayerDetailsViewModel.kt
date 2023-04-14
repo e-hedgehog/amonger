@@ -35,9 +35,6 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : BaseViewMo
     private val _navigateToImageCropper = MutableLiveData<Boolean>()
     val navigateToImageCropper: LiveData<Boolean> get() = _navigateToImageCropper
 
-    private val _isOnline = MutableLiveData<Boolean>()
-    val isOnline: LiveData<Boolean> get() = _isOnline
-
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
@@ -53,17 +50,6 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : BaseViewMo
         currentPlayer.notes?.let { playerNotes.value = it }
         currentPlayer.imageUrl?.let { playerImageUrl.value = it }
         currentPlayer.tags?.let { playerTagsList.value = it }
-    }
-
-    fun monitorConnectionState() {
-        coroutineScope.launch {
-            playersManager.monitorConnectionState().collect {
-                when {
-                    it.isSuccess -> _isOnline.value = it.getOrNull()
-                    it.isFailure -> it.exceptionOrNull()?.printStackTrace()
-                }
-            }
-        }
     }
 
     fun displayImageCropper() {
@@ -84,11 +70,8 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : BaseViewMo
             return
         }
 
-        isOnline.value?.let { online ->
-            if (online)
-                if (currentPlayer.id != null) updatePlayerWithImage() else addPlayerWithImage()
-            else
-                displayErrorSnackbar("No internet connection.")
+        doIfOnline {
+            if (currentPlayer.id != null) updatePlayerWithImage() else addPlayerWithImage()
         }
     }
 
