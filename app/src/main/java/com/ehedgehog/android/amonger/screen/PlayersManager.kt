@@ -95,7 +95,10 @@ class PlayersManager(private val playersReference: DatabaseReference, private va
     }
 
     suspend fun removePlayer(player: PlayerItem) {
-        player.id?.let { playersReference.child(it).removeValue().await() }
+        player.id?.let {
+            playersReference.child(it).removeValue().await()
+            if (!player.imageUrl.isNullOrEmpty()) imagesReference.child("$it.png").delete().await()
+        }
     }
 
     fun fetchStoredPlayers() = callbackFlow<Result<List<PlayerItem>>> {
