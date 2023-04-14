@@ -36,10 +36,6 @@ class PlayersListFragment : BaseFragment<PlayersListViewModel, FragmentPlayersLi
         val view = super.onCreateView(inflater, container, savedInstanceState)
         binding.viewModel = viewModel
 
-        @Suppress("KotlinConstantConditions")
-        if (BuildConfig.FLAVOR == "user")
-            binding.addPlayerButton.visibility = View.GONE
-
         binding.playersRecyclerView.adapter = PlayersListAdapter(
             viewModel::displayPlayerDetails,
             viewModel::onContextMenuItemClicked

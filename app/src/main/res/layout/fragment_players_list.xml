@@ -9,6 +9,7 @@
             type="com.ehedgehog.android.amonger.screen.playersList.PlayersListViewModel" />
 
         <import type="android.view.View" />
+        <import type="com.ehedgehog.android.amonger.BuildConfig" />
         <import type="com.ehedgehog.android.amonger.screen.playersList.PlayersListViewModel.SearchMode" />
     </data>
 
@@ -137,6 +138,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:onClick="@{() -> viewModel.createNewPlayer()}"
+            android:visibility="@{BuildConfig.FLAVOR == `user` ? View.GONE : View.VISIBLE}"
             android:src="@drawable/ic_add"
             app:backgroundTint="@color/red_500"
             app:tint="@color/icon_tint"
