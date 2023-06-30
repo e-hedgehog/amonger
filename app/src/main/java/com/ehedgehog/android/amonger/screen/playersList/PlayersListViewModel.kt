@@ -93,8 +93,8 @@ class PlayersListViewModel : BaseViewModel() {
         } else {
             val queryString = query.lowercase().trim()
             fullPlayersList?.forEach {
-                val playerField = if (searchMode.value == SearchMode.CODE) it.code else "${it.name}, ${it.aka}"
-                if (playerField?.lowercase()?.trim()?.contains(queryString) == true) {
+                val playerField = if (searchMode.value == SearchMode.CODE) "${it.code}, ${it.notes}" else "${it.name}, ${it.aka}"
+                if (playerField.lowercase().trim().contains(queryString)) {
                     resultList.add(it)
                 }
             }

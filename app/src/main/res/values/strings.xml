@@ -19,6 +19,7 @@
     <string name="airship_label">Airship</string>
     <string name="all_maps_label">All maps</string>
     <string name="host_label">Host</string>
+    <string name="mod_label">Mod</string>
     <string name="low_cd_player_label">10cd player</string>
     <string name="medium_cd_player_label">15cd player</string>
     <string name="high_cd_player_label">17+ cd player</string>

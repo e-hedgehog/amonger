@@ -73,7 +73,8 @@ class PlayersListFragment : BaseFragment<PlayersListViewModel, FragmentPlayersLi
                 if (viewModel.filtersVisible.value == false) {
                     binding.searchFilterChips.forEach { view ->
                         val chip = view as Chip
-                        setCheckedFilter(chip, false, chip.text == getString(R.string.host_label))
+                        setCheckedFilter(chip, false, chip.text == getString(R.string.host_label) ||
+                                chip.text == getString(R.string.mod_label))
                     }
                     binding.filterMap.setText(R.string.map_filter_label)
                     binding.filterCd.setText(R.string.cd_filter_label)

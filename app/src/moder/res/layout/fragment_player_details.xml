@@ -250,6 +250,13 @@
 
                     <com.google.android.material.chip.Chip
                         style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:id="@+id/chip_mod"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mod_label"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
                         android:id="@+id/chip_10cd_player"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

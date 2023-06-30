@@ -108,6 +108,15 @@
                         android:onClick="@{() -> viewModel.applyFilter(`host`, filterHost.getText())}"
                         app:ensureMinTouchTargetSize="false"/>
 
+                    <com.google.android.material.chip.Chip
+                        style="@style/ChipFilterCustom"
+                        android:id="@+id/filter_mod"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mod_label"
+                        android:onClick="@{() -> viewModel.applyFilter(`mod`, filterMod.getText())}"
+                        app:ensureMinTouchTargetSize="false"/>
+
                 </com.google.android.material.chip.ChipGroup>
 
             </HorizontalScrollView>
