@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.widget.PopupMenu
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.forEach
@@ -83,6 +84,22 @@ class PlayerDetailsFragment: BaseFragment<PlayerDetailsViewModel, FragmentPlayer
 
         viewModel.isLoading.observe(viewLifecycleOwner) {
             if (it == false) findNavController().navigateUp()
+        }
+
+        val popupMenu = PopupMenu(requireContext(), binding.playerImage, Gravity.END)
+        popupMenu.inflate(R.menu.fragment_player_details_image_context)
+        popupMenu.setOnMenuItemClickListener { viewModel.onContextMenuItemClicked(it) }
+        viewModel.openImageContext.observe(viewLifecycleOwner) {
+            it?.let {
+                popupMenu.show()
+                viewModel.openImageContextComplete()
+            }
+        }
+
+        viewModel.playerImageUrl.observe(viewLifecycleOwner) {
+            if (it == null) {
+                binding.playerImage.setImageResource(R.drawable.placeholder)
+            }
         }
 
         return view

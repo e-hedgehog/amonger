@@ -2,11 +2,13 @@ package com.ehedgehog.android.amonger.screen.playerDetails
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.ehedgehog.android.amonger.Application
+import com.ehedgehog.android.amonger.R
 import com.ehedgehog.android.amonger.screen.PlayerItem
 import com.ehedgehog.android.amonger.screen.PlayerItemTemp
 import com.ehedgehog.android.amonger.screen.PlayersManager
@@ -29,11 +31,14 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : BaseViewMo
     val playerAka = MutableLiveData<String>()
     val playerIsHost = MutableLiveData<Boolean>()
     val playerNotes = MutableLiveData<String>()
-    val playerImageUrl = MutableLiveData<String>()
+    val playerImageUrl = MutableLiveData<String?>()
     val playerTagsList = MutableLiveData<List<String>>()
 
     private val _navigateToImageCropper = MutableLiveData<Boolean>()
     val navigateToImageCropper: LiveData<Boolean> get() = _navigateToImageCropper
+
+    private val _openImageContext = MutableLiveData<Boolean>()
+    val openImageContext: LiveData<Boolean> get() = _openImageContext
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
@@ -61,6 +66,19 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : BaseViewMo
         _navigateToImageCropper.value = null
     }
 
+    fun openImageContext(): Boolean {
+        if (playerImageUrl.value != null) {
+            _openImageContext.value = true
+            return true
+        }
+        return false
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun openImageContextComplete() {
+        _openImageContext.value = null
+    }
+
     fun savePlayer() {
         if (Firebase.auth.currentUser == null) {
             displayErrorSnackbar("You must be authorized to write data.")
@@ -72,6 +90,16 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : BaseViewMo
 
         doIfOnline {
             if (currentPlayer.id != null) updatePlayerWithImage() else addPlayerWithImage()
+        }
+    }
+
+    fun onContextMenuItemClicked(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
+            R.id.context_delete_image -> {
+                playerImageUrl.value = null
+                true
+            }
+            else -> false
         }
     }
 
@@ -102,7 +130,12 @@ class PlayerDetailsViewModel(private val currentPlayer: PlayerItem) : BaseViewMo
             if (currentPlayer.imageUrl != playerImageUrl.value) {
                 currentPlayer.id?.let { id ->
                     try {
-                        val url = playersManager.uploadPlayerImage(Uri.parse(playerImageUrl.value), id)
+                        val url = if (playerImageUrl.value != null) {
+                            playersManager.uploadPlayerImage(Uri.parse(playerImageUrl.value), id)
+                        } else {
+                            playersManager.removeImage(currentPlayer)
+                            null
+                        }
                         updatePlayer(url)
                     } catch (e: Exception) {
                         e.printStackTrace()

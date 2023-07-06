@@ -37,6 +37,7 @@
                     android:src="@drawable/placeholder"
                     android:background="@drawable/image_shape"
                     android:onClick="@{() -> viewModel.displayImageCropper()}"
+                    android:onLongClick="@{() -> viewModel.openImageContext()}"
                     app:imageUrl="@{viewModel.playerImageUrl}"
                     app:cacheOnlyWeb="@{true}"
                     app:layout_constraintStart_toStartOf="parent"
